@@ -9,3 +9,11 @@ class AlertsListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     serializer_class = AlertSerializer
     queryset = Alert.objects.all()
+    filterset_fields = [
+        "project",
+        "severity",
+        "customer_segment",
+        "crime_type",
+        "priority",
+        "group_name",
+    ]

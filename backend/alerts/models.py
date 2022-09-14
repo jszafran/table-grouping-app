@@ -31,10 +31,10 @@ CUSTOMER_SEGMENT_CHOICES = (
 
 CRIME_TYPE_CHOICES = (
     ("terrorism", "terrorism"),
-    ("money laundering", "money laundering"),
-    ("drug trafficking", "drug trafficking"),
+    ("money_laundering", "money_laundering"),
+    ("drug_trafficking", "drug_trafficking"),
     ("cybercrime", "cybercrime"),
-    ("intelectual property crime", "intelectual property crime"),
+    ("intelectual_property_crime", "intelectual_property_crime"),
     ("corruption", "corruption"),
 )
 
