@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from alerts.views import AlertsListView
+from alerts.views import AddGroupAPIView, AlertsListView, RemoveGroupAPIView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/alerts/", AlertsListView.as_view()),
+    path("api/alerts/create_group", AddGroupAPIView.as_view()),
+    path("api/alerts/remove_group", RemoveGroupAPIView.as_view()),
 ]
