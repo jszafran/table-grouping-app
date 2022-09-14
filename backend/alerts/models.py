@@ -64,3 +64,4 @@ class Alert(CreatedModifiedMixin, models.Model):
     )
     crime_type = models.CharField(max_length=100, choices=CRIME_TYPE_CHOICES)
     priority = models.CharField(max_length=100, choices=PRIORITY_CHOICES)
+    group_name = models.CharField(max_length=300, blank=True, null=True)
