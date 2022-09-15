@@ -20,9 +20,10 @@ export default {
       {text: "Severity", value: "severity"},
       {text: "Customer Segment", value: "customer_segment"},
       {text: "Priority", value: "priority"},
+      {text: "Crime Type", value: "crime_type"},
     ],
     items: null,
-    itemsPerPage: 50,
+    itemsPerPage: 20,
     dataLoaded: false,
   }),
   mounted() {
