@@ -21,8 +21,14 @@
     </v-app-bar>
 
     <v-main>
-      <GroupingControls></GroupingControls>
-      <AlertTable/>
+      <GroupingControls
+          @projectChosen="onProjectChosen"
+          @projectCleared="onProjectCleared"
+          :choices="choices"
+      ></GroupingControls>
+      <AlertTable
+        :alerts="alerts"
+      />
     </v-main>
   </v-app>
 </template>
@@ -30,6 +36,7 @@
 <script>
 import AlertTable from "@/components/AlertTable";
 import GroupingControls from "@/components/GroupingControls";
+import {emptyChoices} from "@/utils";
 
 export default {
   name: 'App',
@@ -39,8 +46,30 @@ export default {
     GroupingControls,
   },
 
-  data: () => ({
-    //
-  }),
+  data: function() {
+    return {
+      alerts: [],
+      choices: emptyChoices(),
+    }
+  },
+  methods: {
+   async onProjectChosen(project) {
+      this.$http.get(`api/alerts?project=${project}`).then(resp => {
+        this.alerts = resp.data.results
+      }).catch(err => {
+        console.log(err)
+      })
+
+     this.$http.get(`api/alerts/grouping_choices?project=${project}`).then(resp => {
+       this.choices = resp.data
+     }).catch(err => {
+       console.log(err)
+     })
+    },
+    onProjectCleared() {
+     this.alerts = []
+     this.choices = emptyChoices()
+    }
+  }
 };
 </script>

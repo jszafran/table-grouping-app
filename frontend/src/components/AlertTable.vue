@@ -1,17 +1,19 @@
 <template>
-  <div v-if="dataLoaded">
-    <v-data-table
-        :headers="headers"
-        :items-per-page="itemsPerPage"
-        :items="items"
-    >
-    </v-data-table>
-  </div>
+  <v-data-table
+      :headers="headers"
+      :items-per-page="itemsPerPage"
+      :items="alerts"
+      fixed-header
+      dense
+      :show-select="true"
+  >
+  </v-data-table>
 </template>
 
 <script>
 export default {
   name: "AlertTable",
+  props: ["alerts"],
   data: () => ({
     headers: [
       {text: "Alert ID", value: "id"},
@@ -22,19 +24,8 @@ export default {
       {text: "Priority", value: "priority"},
       {text: "Crime Type", value: "crime_type"},
     ],
-    items: null,
     itemsPerPage: 20,
     dataLoaded: false,
   }),
-  mounted() {
-    console.log("Alert table was mounted!")
-    this.$http.get("api/alerts").then((resp) => {
-      this.items = resp.data.results
-      this.dataLoaded = true
-    }).catch((err) => {
-      console.log(err)
-      console.log("Failed to fetch alerts")
-    })
-  }
 }
 </script>
