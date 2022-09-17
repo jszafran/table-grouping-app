@@ -1,59 +1,74 @@
 <template>
   <div>
+      <v-row align-content="left">
+        <v-col>
+          <v-select
+              label="Project"
+              :items="projects"
+              v-model="project"
+              clearable
+          ></v-select>
+        </v-col>
+        <v-col>
+          <v-select
+              v-if="project"
+              label="Customer Segment"
+              :items="choices.customer_segment"
+              v-model="customerSegment"
+              clearable
+          ></v-select>
+        </v-col>
+        <v-col>
+          <v-select
+              v-if="project"
+              label="Crime Type"
+              :items="choices.crime_type"
+              v-model="crimeType"
+              clearable
+          ></v-select>
+        </v-col>
+        <v-col>
+          <v-select
+              v-if="project"
+              label="Severity"
+              :items="choices.severity"
+              v-model="severity"
+              clearable
+          ></v-select>
+        </v-col>
+        <v-col>
+          <v-select
+              v-if="project"
+              label="Priority"
+              :items="choices.priority"
+              v-model="priority"
+              clearable
+          ></v-select>
+        </v-col>
+        <v-col>
+          <v-autocomplete
+              v-if="project"
+              label="Alert group"
+              :items="choices.group_name"
+              v-model="alertGroup"
+              clearable
+          ></v-autocomplete>
+          <v-btn v-if="filtersApplied"
+                 color="info"
+                 small
+                 @click="resetChoices"
+          >
+            Clear filters
+          </v-btn>
+        </v-col>
+
+      </v-row>
+
     <v-row>
       <v-col>
-        <v-select
-            label="Project"
-            :items="projects"
-            v-model="project"
-            clearable
-        ></v-select>
-      </v-col>
-      <v-col>
-        <v-select
-            v-if="project"
-            label="Customer Segment"
-            :items="choices.customer_segment"
-            v-model="customerSegment"
-            clearable
-        ></v-select>
-      </v-col>
-      <v-col>
-        <v-select
-            v-if="project"
-            label="Crime Type"
-            :items="choices.crime_type"
-            v-model="crimeType"
-            clearable
-        ></v-select>
-      </v-col>
-      <v-col>
-        <v-select
-            v-if="project"
-            label="Severity"
-            :items="choices.severity"
-            v-model="severity"
-            clearable
-        ></v-select>
-      </v-col>
-      <v-col>
-        <v-select
-            v-if="project"
-            label="Priority"
-            :items="choices.priority"
-            v-model="priority"
-            clearable
-        ></v-select>
-        <v-autocomplete
-            v-if="project"
-            label="Alert group"
-            :items="choices.group_name"
-            v-model="alertGroup"
-            clearable
-        ></v-autocomplete>
+
       </v-col>
     </v-row>
-
   </div>
 
 </template>
@@ -61,7 +76,12 @@
 <script>
 export default {
   name: "GroupingControls",
-  emits: ["filtersUpdated", "projectChosen", "projectCleared"],
+  emits: [
+      "filtersUpdated",
+      "projectChosen",
+      "projectCleared",
+      "filtersApplied",
+  ],
   props: ["choices"],
   data: () => ({
     projects: [
@@ -109,6 +129,15 @@ export default {
       }
 
       return "?" + filters.join("&")
+    },
+    filtersApplied() {
+      return (
+          this.hasValue(this.customerSegment)
+          || this.hasValue(this.priority)
+          || this.hasValue(this.severity)
+          || this.hasValue(this.crimeType)
+          || this.hasValue(this.alertGroup)
+      )
     }
   },
   methods: {
@@ -141,6 +170,9 @@ export default {
       if (newQuery !== oldQuery && newQuery.includes("project=")) {
         this.$emit("filtersUpdated", newQuery)
       }
+    },
+    filtersApplied(newVal, oldVal) {
+      if (newVal !== oldVal) this.$emit("filtersApplied", newVal)
     }
   },
 }

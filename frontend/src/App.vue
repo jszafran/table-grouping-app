@@ -10,23 +10,21 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+
     </v-app-bar>
 
     <v-main>
-      <GroupingControls
-          @projectChosen="onProjectChosen"
-          @projectCleared="onProjectCleared"
-          @filtersUpdated="onFiltersUpdated"
-          :choices="choices"
-      ></GroupingControls>
+      <div class="controls">
+        <GroupingControls
+            @projectChosen="onProjectChosen"
+            @projectCleared="onProjectCleared"
+            @filtersUpdated="onFiltersUpdated"
+            @filtersApplied="onFiltersApplied"
+            :choices="choices"
+        ></GroupingControls>
+        <CreateAlertGroup v-if="filtersApplied"></CreateAlertGroup>
+      </div>
+
       <AlertTable
         :alerts="alerts"
       />
@@ -37,6 +35,7 @@
 <script>
 import AlertTable from "@/components/AlertTable";
 import GroupingControls from "@/components/GroupingControls";
+import CreateAlertGroup from "@/components/CreateAlertGroup";
 import {emptyChoices} from "@/utils";
 
 export default {
@@ -45,16 +44,20 @@ export default {
   components: {
     AlertTable,
     GroupingControls,
+    CreateAlertGroup,
   },
 
   data: function() {
     return {
       alerts: [],
       choices: emptyChoices(),
+      project: null,
+      filtersApplied: false,
     }
   },
   methods: {
    async onProjectChosen(project) {
+     this.project = project
       this.$http.get(`api/alerts?project=${project}`).then(resp => {
         this.alerts = resp.data.results
       }).catch(err => {
@@ -70,6 +73,7 @@ export default {
     async onProjectCleared() {
      this.alerts = []
      this.choices = emptyChoices()
+      this.project = null;
     },
     async onFiltersUpdated(query) {
      this.$http.get(`api/alerts/${query}`).then(resp => {
@@ -77,7 +81,17 @@ export default {
      }).catch(err => {
        console.log(err)
      })
+    },
+    async onFiltersApplied(v) {
+     this.filtersApplied = v
     }
   }
 };
 </script>
+
+<style>
+  .controls {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+</style>

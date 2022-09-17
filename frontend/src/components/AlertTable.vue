@@ -17,12 +17,12 @@ export default {
   data: () => ({
     headers: [
       {text: "Alert ID", value: "id"},
-      {text: "Group name", value: "group_name"},
       {text: "Project", value: "project"},
-      {text: "Severity", value: "severity"},
       {text: "Customer Segment", value: "customer_segment"},
-      {text: "Priority", value: "priority"},
       {text: "Crime Type", value: "crime_type"},
+      {text: "Severity", value: "severity"},
+      {text: "Priority", value: "priority"},
+      {text: "Group name", value: "group_name"},
     ],
     itemsPerPage: 20,
     dataLoaded: false,
