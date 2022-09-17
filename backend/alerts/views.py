@@ -49,6 +49,7 @@ class ListGroupingChoicesAPIView(views.APIView):
             "customer_segment",
             "crime_type",
             "priority",
+            "group_name",
         )
 
         data = {choice: [] for choice in choices}

@@ -5,6 +5,7 @@ function emptyChoices() {
             priorities: [],
             severities: [],
             crimeTypes: [],
+            groupNames: [],
         },
     }
 }
