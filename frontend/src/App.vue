@@ -24,6 +24,7 @@
       <GroupingControls
           @projectChosen="onProjectChosen"
           @projectCleared="onProjectCleared"
+          @filtersUpdated="onFiltersUpdated"
           :choices="choices"
       ></GroupingControls>
       <AlertTable
@@ -66,9 +67,16 @@ export default {
        console.log(err)
      })
     },
-    onProjectCleared() {
+    async onProjectCleared() {
      this.alerts = []
      this.choices = emptyChoices()
+    },
+    async onFiltersUpdated(query) {
+     this.$http.get(`api/alerts/${query}`).then(resp => {
+       this.alerts = resp.data.results
+     }).catch(err => {
+       console.log(err)
+     })
     }
   }
 };

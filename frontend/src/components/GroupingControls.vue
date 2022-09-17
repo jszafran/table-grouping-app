@@ -79,6 +79,11 @@ export default {
   computed: {
     queryParams() {
       const filters = []
+
+      if (this.hasValue(this.project)) {
+        filters.push(`project=${this.project}`)
+      }
+
       if (this.hasValue(this.customerSegment)) {
         filters.push(`customer_segment=${this.customerSegment}`)
       }
@@ -111,11 +116,19 @@ export default {
       return v !== null
           && v !== undefined
           && v !== ""
+    },
+    resetChoices() {
+      this.severity = null;
+      this.crimeType = null;
+      this.priority = null;
+      this.alertGroup = null;
+      this.customerSegment = null;
     }
   },
   watch: {
     project(newProj, oldProj) {
       if (newProj === undefined || newProj === null) {
+        this.resetChoices()
         this.$emit("projectCleared")
         return
       }
@@ -125,7 +138,7 @@ export default {
       }
     },
     queryParams(newQuery, oldQuery) {
-      if (newQuery !== oldQuery) {
+      if (newQuery !== oldQuery && newQuery.includes("project=")) {
         this.$emit("filtersUpdated", newQuery)
       }
     }
