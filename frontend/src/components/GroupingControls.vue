@@ -53,20 +53,19 @@
               v-model="alertGroup"
               clearable
           ></v-autocomplete>
-          <v-btn v-if="filtersApplied"
-                 color="info"
-                 small
-                 @click="resetChoices"
-          >
-            Clear filters
-          </v-btn>
+
         </v-col>
 
       </v-row>
 
-    <v-row>
+    <v-row style="margin-top: 0px;">
       <v-col>
-
+        <v-btn v-if="filtersApplied"
+               color="red lighten-1"
+               @click="resetChoices"
+        >
+          Clear filters
+        </v-btn>
       </v-col>
     </v-row>
   </div>

@@ -14,7 +14,7 @@
     </v-app-bar>
 
     <v-main>
-      <div class="controls">
+      <v-container>
         <GroupingControls
             @projectChosen="onProjectChosen"
             @projectCleared="onProjectCleared"
@@ -23,7 +23,7 @@
             :choices="choices"
         ></GroupingControls>
         <CreateAlertGroup v-if="filtersApplied"></CreateAlertGroup>
-      </div>
+      </v-container>
 
       <AlertTable
         :alerts="alerts"

@@ -5,7 +5,6 @@
       :items="alerts"
       fixed-header
       dense
-      :show-select="true"
   >
   </v-data-table>
 </template>
