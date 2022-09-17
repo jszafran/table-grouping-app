@@ -14,6 +14,7 @@
             v-if="project"
             label="Customer Segment"
             :items="choices.customer_segment"
+            v-model="customerSegment"
             clearable
         ></v-select>
       </v-col>
@@ -22,6 +23,7 @@
             v-if="project"
             label="Crime Type"
             :items="choices.crime_type"
+            v-model="crimeType"
             clearable
         ></v-select>
       </v-col>
@@ -30,6 +32,7 @@
             v-if="project"
             label="Severity"
             :items="choices.severity"
+            v-model="severity"
             clearable
         ></v-select>
       </v-col>
@@ -38,11 +41,14 @@
             v-if="project"
             label="Priority"
             :items="choices.priority"
+            v-model="priority"
+            clearable
         ></v-select>
         <v-autocomplete
             v-if="project"
             label="Alert group"
             :items="choices.group_name"
+            v-model="alertGroup"
             clearable
         ></v-autocomplete>
       </v-col>
@@ -55,7 +61,7 @@
 <script>
 export default {
   name: "GroupingControls",
-  emits: ["controlsUpdated", "projectChosen", "projectCleared"],
+  emits: ["filtersUpdated", "projectChosen", "projectCleared"],
   props: ["choices"],
   data: () => ({
     projects: [
@@ -64,9 +70,49 @@ export default {
         "LB_PROJ_IT",
     ],
     project: undefined,
-
+    customerSegment: undefined,
+    severity: undefined,
+    priority: undefined,
+    crimeType: undefined,
+    alertGroup: undefined,
   }),
-  methods: {},
+  computed: {
+    queryParams() {
+      const filters = []
+      if (this.hasValue(this.customerSegment)) {
+        filters.push(`customer_segment=${this.customerSegment}`)
+      }
+
+      if (this.hasValue(this.severity)) {
+        filters.push(`severity=${this.severity}`)
+      }
+
+      if (this.hasValue(this.priority)) {
+        filters.push(`priority=${this.priority}`)
+      }
+
+      if (this.hasValue(this.crimeType)) {
+        filters.push(`crime_type=${this.crimeType}`)
+      }
+
+      if (this.hasValue(this.alertGroup)) {
+        filters.push(`group_name=${this.alertGroup}`)
+      }
+
+      if (filters.length === 0) {
+        return ""
+      }
+
+      return "?" + filters.join("&")
+    }
+  },
+  methods: {
+    hasValue(v) {
+      return v !== null
+          && v !== undefined
+          && v !== ""
+    }
+  },
   watch: {
     project(newProj, oldProj) {
       if (newProj === undefined || newProj === null) {
@@ -77,8 +123,12 @@ export default {
       if (newProj !== oldProj && newProj !== undefined) {
         this.$emit("projectChosen", newProj)
       }
+    },
+    queryParams(newQuery, oldQuery) {
+      if (newQuery !== oldQuery) {
+        this.$emit("filtersUpdated", newQuery)
+      }
     }
-  }
-
+  },
 }
 </script>
