@@ -20,6 +20,7 @@ from alerts.views import (
     AddGroupAPIView,
     AlertsListView,
     ListGroupingChoicesAPIView,
+    RemoveAllGroupsAPIView,
     RemoveGroupAPIView,
 )
 
@@ -28,5 +29,6 @@ urlpatterns = [
     path("api/alerts/", AlertsListView.as_view()),
     path("api/alerts/create_group", AddGroupAPIView.as_view()),
     path("api/alerts/remove_group", RemoveGroupAPIView.as_view()),
+    path("api/alerts/remove_all_groups", RemoveAllGroupsAPIView.as_view()),
     path("api/alerts/grouping_choices", ListGroupingChoicesAPIView.as_view()),
 ]

@@ -6,15 +6,22 @@
       dark
     >
       <div class="d-flex align-center">
+        <v-app-bar-title>Alert Grouping POC</v-app-bar-title>
       </div>
       <v-spacer></v-spacer>
+      <v-btn v-if="project"
+          text
+          @click="onRemoveAllGroups"
+      >
+        <span class="mr-2">Remove all groups</span>
+      </v-btn>
     </v-app-bar>
     <v-main>
       <v-container>
         <GroupCreatedSnackbar v-if="showSnackbar"
             :show="showSnackbar"
             :group-name="snackbarGroupName"
-            :alerts-count="100"
+            :alerts-count="alerts.length"
             @closeSnackbar="showSnackbar = false"
         ></GroupCreatedSnackbar>
 
@@ -117,6 +124,14 @@ export default {
       await this.createAlertGroup(groupName)
       this.snackbarGroupName = groupName
       this.showSnackbar = true;
+    },
+    async onRemoveAllGroups() {
+     this.$http.post(
+         `/api/alerts/remove_all_groups`
+     ).then(() => {
+       this.fetchAlerts(`api/alerts/${this.query}`)
+       this.fetchChoices(this.project)
+     }).catch(err => console.log(err))
     }
   }
 };

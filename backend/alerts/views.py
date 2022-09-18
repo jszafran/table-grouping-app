@@ -35,6 +35,12 @@ class RemoveGroupAPIView(views.APIView):
         return Response(status=status.HTTP_200_OK)
 
 
+class RemoveAllGroupsAPIView(views.APIView):
+    def post(self, request):
+        Alert.objects.all().update(group_name=None)
+        return Response(status=status.HTTP_200_OK)
+
+
 class ListGroupingChoicesAPIView(views.APIView):
     def get(self, request):
         project = self.request.query_params.get("project")
