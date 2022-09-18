@@ -22,9 +22,12 @@
             @filtersApplied="onFiltersApplied"
             :choices="choices"
         ></GroupingControls>
-        <CreateAlertGroup v-if="filtersApplied"></CreateAlertGroup>
+        <CreateAlertGroup
+            v-if="filtersApplied"
+            @alertGroupCreate="onAlertGroupCreate"
+        >
+        </CreateAlertGroup>
       </v-container>
-
       <AlertTable
         :alerts="alerts"
       />
@@ -40,7 +43,6 @@ import {emptyChoices} from "@/utils";
 
 export default {
   name: 'App',
-
   components: {
     AlertTable,
     GroupingControls,
@@ -53,22 +55,46 @@ export default {
       choices: emptyChoices(),
       project: null,
       filtersApplied: false,
+      query: "",
     }
   },
   methods: {
-   async onProjectChosen(project) {
-     this.project = project
-      this.$http.get(`api/alerts?project=${project}`).then(resp => {
-        this.alerts = resp.data.results
-      }).catch(err => {
-        console.log(err)
-      })
-
-     this.$http.get(`api/alerts/grouping_choices?project=${project}`).then(resp => {
-       this.choices = resp.data
+   async fetchAlerts(url) {
+     this.$http.get(url).then(resp => {
+       this.alerts = resp.data.results
      }).catch(err => {
        console.log(err)
      })
+   },
+    async fetchChoices(project) {
+     this.$http.get(`api/alerts/grouping_choices?project=${project}`).then(
+         resp => {
+           console.log(resp.data)
+           this.choices = resp.data
+         }
+     ).catch(err => {
+       console.log(err)
+     })
+    },
+    async createAlertGroup(groupName) {
+      this.$http.post(
+          `api/alerts/create_group`,
+          {
+            group_name: groupName,
+            alert_ids: this.alerts.map(x => x.id),
+          }
+      ).then(resp => {
+        console.log(resp)
+        this.fetchAlerts(`api/alerts/${this.query}`)
+        this.fetchChoices(this.project)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+   async onProjectChosen(project) {
+     this.project = project
+     this.alerts = await this.fetchAlerts(`api/alerts?project=${project}`)
+     this.choices = await this.fetchChoices(project)
     },
     async onProjectCleared() {
      this.alerts = []
@@ -76,14 +102,14 @@ export default {
       this.project = null;
     },
     async onFiltersUpdated(query) {
-     this.$http.get(`api/alerts/${query}`).then(resp => {
-       this.alerts = resp.data.results
-     }).catch(err => {
-       console.log(err)
-     })
+     this.query = query
+     this.alerts = await this.fetchAlerts(`api/alerts/${query}`)
     },
     async onFiltersApplied(v) {
      this.filtersApplied = v
+    },
+    async onAlertGroupCreate(groupName) {
+      await this.createAlertGroup(groupName)
     }
   }
 };

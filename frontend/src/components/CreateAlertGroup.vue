@@ -8,32 +8,38 @@
             :rules="groupNameRules"
             v-model="groupName"
         ></v-text-field>
-
       </v-col>
       <v-col>
         <v-btn
             color="success"
             class="mr-4"
             :disabled="!valid || !groupName"
+            @click="emitAlertGroupCreate"
         >
           Create Group
         </v-btn>
       </v-col>
     </v-row>
   </v-form>
-
 </template>
 
 <script>
 export default {
   name: "CreateAlertGroup",
+  emits: ["alertGroupCreate"],
   data: () => ({
-    groupName: null,
+    groupName: "",
     valid: false,
     groupNameRules: [
         v => !(v === "" || v === null) || "Group name cannot be an empty string",
         v => !v.includes(" ") || "Group name cannot contain white space.",
     ]
-})
+}),
+  methods: {
+    emitAlertGroupCreate() {
+      console.log("Emitting alertGroupCreate")
+      this.$emit("alertGroupCreate", this.groupName)
+    }
+  }
 }
 </script>

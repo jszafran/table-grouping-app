@@ -1,6 +1,6 @@
 <template>
   <div>
-      <v-row align-content="left">
+      <v-row>
         <v-col>
           <v-select
               label="Project"
@@ -11,7 +11,7 @@
         </v-col>
         <v-col>
           <v-select
-              v-if="project"
+              v-if="project && choices"
               label="Customer Segment"
               :items="choices.customer_segment"
               v-model="customerSegment"
@@ -20,7 +20,7 @@
         </v-col>
         <v-col>
           <v-select
-              v-if="project"
+              v-if="project  && choices"
               label="Crime Type"
               :items="choices.crime_type"
               v-model="crimeType"
@@ -29,7 +29,7 @@
         </v-col>
         <v-col>
           <v-select
-              v-if="project"
+              v-if="project && choices"
               label="Severity"
               :items="choices.severity"
               v-model="severity"
@@ -38,7 +38,7 @@
         </v-col>
         <v-col>
           <v-select
-              v-if="project"
+              v-if="project && choices"
               label="Priority"
               :items="choices.priority"
               v-model="priority"
@@ -47,7 +47,7 @@
         </v-col>
         <v-col>
           <v-autocomplete
-              v-if="project"
+              v-if="project && choices"
               label="Alert group"
               :items="choices.group_name"
               v-model="alertGroup"
