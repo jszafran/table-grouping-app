@@ -69,7 +69,6 @@ export default {
     async fetchChoices(project) {
      this.$http.get(`api/alerts/grouping_choices?project=${project}`).then(
          resp => {
-           console.log(resp.data)
            this.choices = resp.data
          }
      ).catch(err => {
@@ -83,8 +82,7 @@ export default {
             group_name: groupName,
             alert_ids: this.alerts.map(x => x.id),
           }
-      ).then(resp => {
-        console.log(resp)
+      ).then(() => {
         this.fetchAlerts(`api/alerts/${this.query}`)
         this.fetchChoices(this.project)
       }).catch(err => {

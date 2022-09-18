@@ -37,7 +37,6 @@ export default {
 }),
   methods: {
     emitAlertGroupCreate() {
-      console.log("Emitting alertGroupCreate")
       this.$emit("alertGroupCreate", this.groupName)
     }
   }

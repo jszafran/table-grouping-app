@@ -4,8 +4,7 @@ import vuetify from './plugins/vuetify'
 import axios from 'axios'
 
 Vue.config.productionTip = false
-// TODO: parametrize API URL (take from ENV)
-axios.defaults.baseURL = 'http://127.0.0.1:8000/'
+axios.defaults.baseURL = process.env.VUE_APP_API_URL
 Vue.prototype.$http = axios
 
 new Vue({
