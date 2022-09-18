@@ -7,14 +7,17 @@
     >
       <div class="d-flex align-center">
       </div>
-
       <v-spacer></v-spacer>
-
-
     </v-app-bar>
-
     <v-main>
       <v-container>
+        <GroupCreatedSnackbar v-if="showSnackbar"
+            :show="showSnackbar"
+            :group-name="snackbarGroupName"
+            :alerts-count="100"
+            @closeSnackbar="showSnackbar = false"
+        ></GroupCreatedSnackbar>
+
         <GroupingControls
             @projectChosen="onProjectChosen"
             @projectCleared="onProjectCleared"
@@ -40,10 +43,12 @@ import AlertTable from "@/components/AlertTable";
 import GroupingControls from "@/components/GroupingControls";
 import CreateAlertGroup from "@/components/CreateAlertGroup";
 import {emptyChoices} from "@/utils";
+import GroupCreatedSnackbar from "@/components/GroupCreatedSnackbar";
 
 export default {
   name: 'App',
   components: {
+    GroupCreatedSnackbar,
     AlertTable,
     GroupingControls,
     CreateAlertGroup,
@@ -56,6 +61,8 @@ export default {
       project: null,
       filtersApplied: false,
       query: "",
+      showSnackbar: false,
+      snackbarGroupName: "",
     }
   },
   methods: {
@@ -108,6 +115,8 @@ export default {
     },
     async onAlertGroupCreate(groupName) {
       await this.createAlertGroup(groupName)
+      this.snackbarGroupName = groupName
+      this.showSnackbar = true;
     }
   }
 };

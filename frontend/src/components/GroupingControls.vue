@@ -58,7 +58,7 @@
 
       </v-row>
 
-    <v-row style="margin-top: 0px;">
+    <v-row style="margin-top: 0;">
       <v-col>
         <v-btn v-if="filtersApplied"
                color="red lighten-1"
