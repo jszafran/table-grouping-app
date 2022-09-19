@@ -5,6 +5,7 @@
       :items="alerts"
       fixed-header
       dense
+      :loading="tableLoading"
   >
   </v-data-table>
 </template>
@@ -12,7 +13,7 @@
 <script>
 export default {
   name: "AlertTable",
-  props: ["alerts"],
+  props: ["alerts", "tableLoading"],
   data: () => ({
     headers: [
       {text: "Alert ID", value: "id"},
@@ -24,7 +25,6 @@ export default {
       {text: "Group name", value: "group_name"},
     ],
     itemsPerPage: 20,
-    dataLoaded: false,
   }),
 }
 </script>

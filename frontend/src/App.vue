@@ -40,6 +40,7 @@
       </v-container>
       <AlertTable
         :alerts="alerts"
+        :table-loading="tableLoading"
       />
     </v-main>
   </v-app>
@@ -70,14 +71,18 @@ export default {
       query: "",
       showSnackbar: false,
       snackbarGroupName: "",
+      tableLoading: false,
     }
   },
   methods: {
    async fetchAlerts(url) {
+     this.tableLoading = true
      this.$http.get(url).then(resp => {
        this.alerts = resp.data.results
+       this.tableLoading = false
      }).catch(err => {
        console.log(err)
+       this.tableLoading = false
      })
    },
     async fetchChoices(project) {
@@ -90,6 +95,7 @@ export default {
      })
     },
     async createAlertGroup(groupName) {
+      this.tableLoading = true
       this.$http.post(
           `api/alerts/create_group`,
           {
@@ -126,6 +132,7 @@ export default {
       this.showSnackbar = true;
     },
     async onRemoveAllGroups() {
+     this.tableLoading = true
      this.$http.post(
          `/api/alerts/remove_all_groups`
      ).then(() => {
