@@ -12,3 +12,8 @@ ALLOWED_HOSTS = [
 DEBUG = False
 
 REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = ("rest_framework.renderers.JSONRenderer",)
+
+try:
+    REQUEST_SLEEP_SECONDS = float(os.getenv("REQUEST_SLEEP_SECONDS"))
+except (ValueError, TypeError):
+    REQUEST_SLEEP_SECONDS = 0.0
