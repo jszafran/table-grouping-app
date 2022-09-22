@@ -35,6 +35,7 @@ export default {
     groupNameRules: [
         v => !v.includes(" ") || "Group name cannot contain white space.",
     ],
+
 }),
   methods: {
     emitAlertGroupCreate() {

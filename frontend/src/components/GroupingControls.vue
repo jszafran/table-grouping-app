@@ -7,6 +7,8 @@
               :items="projects"
               v-model="project"
               clearable
+              chips
+              :disabled="waitingForAlerts"
           ></v-select>
         </v-col>
         <v-col>
@@ -15,7 +17,10 @@
               label="Customer Segment"
               :items="choices.customer_segment"
               v-model="customerSegment"
-              clearable
+              multiple
+              deletable-chips
+              chips
+              :disabled="waitingForAlerts"
           ></v-select>
         </v-col>
         <v-col>
@@ -25,6 +30,10 @@
               :items="choices.crime_type"
               v-model="crimeType"
               clearable
+              multiple
+              deletable-chips
+              chips
+              :disabled="waitingForAlerts"
           ></v-select>
         </v-col>
         <v-col>
@@ -34,6 +43,10 @@
               :items="choices.severity"
               v-model="severity"
               clearable
+              multiple
+              deletable-chips
+              chips
+              :disabled="waitingForAlerts"
           ></v-select>
         </v-col>
         <v-col>
@@ -43,6 +56,10 @@
               :items="choices.priority"
               v-model="priority"
               clearable
+              multiple
+              deletable-chips
+              chips
+              :disabled="waitingForAlerts"
           ></v-select>
         </v-col>
         <v-col>
@@ -52,6 +69,10 @@
               :items="choices.group_name"
               v-model="alertGroup"
               clearable
+              multiple
+              deletable-chips
+              chips
+              :disabled="waitingForAlerts"
           ></v-autocomplete>
 
         </v-col>
@@ -81,7 +102,7 @@ export default {
       "projectCleared",
       "filtersApplied",
   ],
-  props: ["choices"],
+  props: ["choices", "waitingForAlerts"],
   data: () => ({
     projects: [
         "LB_PROJ_GB",
@@ -104,23 +125,23 @@ export default {
       }
 
       if (this.hasValue(this.customerSegment)) {
-        filters.push(`customer_segment=${this.customerSegment}`)
+        filters.push(this.getQueryUrl("customer_segment", this.customerSegment))
       }
 
       if (this.hasValue(this.severity)) {
-        filters.push(`severity=${this.severity}`)
+        filters.push(this.getQueryUrl("severity", this.severity))
       }
 
       if (this.hasValue(this.priority)) {
-        filters.push(`priority=${this.priority}`)
+        filters.push(this.getQueryUrl("priority", this.priority))
       }
 
       if (this.hasValue(this.crimeType)) {
-        filters.push(`crime_type=${this.crimeType}`)
+        filters.push(this.getQueryUrl("crime_type", this.crimeType))
       }
 
       if (this.hasValue(this.alertGroup)) {
-        filters.push(`group_name=${this.alertGroup}`)
+        filters.push(this.getQueryUrl("alert_group", this.alertGroup))
       }
 
       if (filters.length === 0) {
@@ -140,6 +161,10 @@ export default {
     }
   },
   methods: {
+    getQueryUrl(key, val) {
+      const suffix = Object.values(val).length > 1 ? "__in" : ""
+      return `${key}${suffix}=${val}`
+    },
     hasValue(v) {
       return v !== null
           && v !== undefined

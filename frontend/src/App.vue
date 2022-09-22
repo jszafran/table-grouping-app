@@ -31,6 +31,7 @@
             @filtersUpdated="onFiltersUpdated"
             @filtersApplied="onFiltersApplied"
             :choices="choices"
+            :waiting-for-alerts="waitingForAlerts"
         ></GroupingControls>
         <CreateAlertGroup
             v-if="filtersApplied"
@@ -72,17 +73,26 @@ export default {
       showSnackbar: false,
       snackbarGroupName: "",
       tableLoading: false,
+      waitingForAlerts: false,
     }
   },
   methods: {
+    turnOnLoader() {
+      this.tableLoading = true
+      this.waitingForAlerts = true
+    },
+    turnOffLoader() {
+      this.tableLoading = false
+      this.waitingForAlerts = false
+    },
    async fetchAlerts(url) {
-     this.tableLoading = true
+    this.turnOnLoader()
      this.$http.get(url).then(resp => {
        this.alerts = resp.data.results
-       this.tableLoading = false
+       this.turnOffLoader()
      }).catch(err => {
        console.log(err)
-       this.tableLoading = false
+       this.turnOffLoader()
      })
    },
     async fetchChoices(project) {
