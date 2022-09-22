@@ -8,9 +8,9 @@ class AlertFilter(filters.FilterSet):
         model = Alert
         fields = {
             "project": ["exact"],
-            "severity": ["exact"],
-            "customer_segment": ["exact"],
-            "crime_type": ["exact"],
-            "priority": ["exact"],
-            "group_name": ["exact", "isnull"],
+            "severity": ["exact", "in"],
+            "customer_segment": ["exact", "in"],
+            "crime_type": ["exact", "in"],
+            "priority": ["exact", "in"],
+            "group_name": ["exact", "isnull", "in"],
         }
