@@ -34,6 +34,7 @@ export default {
     valid: false,
     groupNameRules: [
         v => !v.includes(" ") || "Group name cannot contain white space.",
+        v => !v.includes(",") || "group name cannot contain a comma."
     ],
 
 }),

@@ -141,7 +141,7 @@ export default {
       }
 
       if (this.hasValue(this.alertGroup)) {
-        filters.push(this.getQueryUrl("alert_group", this.alertGroup))
+        filters.push(this.getQueryUrl("group_name", this.alertGroup))
       }
 
       if (filters.length === 0) {
