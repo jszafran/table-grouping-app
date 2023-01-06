@@ -1,6 +1,6 @@
 # table-grouping-app
 
-Small, exemplary app I created as a proof of concept for some of my job-related stuff.
+Quick and dirty prototype to prove a concept at my job.
 
 Backend uses DRF (Django Rest Framework), frontend is coded with VueJS & Vuetify.
 
